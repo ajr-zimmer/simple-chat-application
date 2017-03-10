@@ -2,6 +2,8 @@
 $(function() {
   var client = io();
   $('form').submit(function(){
+    var chatLog = $('#messagesWrap');
+    chatLog.animate({scrollTop: chatLog.prop('scrollHeight')}, 1000);
     if(isNonEmptyString($('#m').val())){
       client.emit('send message', $('#m').val());
       $('#m').val('');

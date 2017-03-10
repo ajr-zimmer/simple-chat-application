@@ -1,13 +1,8 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+html, body {
+    height: 100%;
+    width: 100%;
 }
-
-body {
-    font: 13px Helvetica, Arial;
-}
-
+/*
 form {
     position: fixed;
     bottom: 0;
@@ -16,30 +11,35 @@ form {
     padding: 3px;
 
     background: #000;
-}
+}*/
 
-form input {
-    width: 90%;
-    margin-right: .5%;
-    padding: 10px;
-
-    border: 0;
-}
-
-form button {
-    width: 9%;
-    padding: 10px;
-
-    border: none;
-    background: rgb(130, 224, 255);
+#sectionWrap {
+  width: inherit;
+  height: inherit;
 }
 
 #chatarea {
   float: left;
-  border: 1px #ff00cb solid;
+  border: 3px #ff00cb solid;
   width: 70%;
+  height: inherit;
+}
+#userarea {
+  float: right;
+  border: 3px #78ff00 solid;
+  width: 30%;
+  height: inherit;
 }
 
+#messagesWrap {
+  height: 95%;
+  border: 3px #7673fc solid;
+  overflow: auto;
+}
+
+#chatsubmit {
+  height: 5%;
+}
 
 #messages {
     margin: 0;

@@ -11,13 +11,26 @@
 <body>
     <div id="sectionWrap">
         <div id="chatarea">
-            <ul id="messages"></ul>
-            <form action="">
-                <input id="m" autocomplete="off" /><button>Send</button>
+            <div id="messagesWrap"><ul id="messages"></ul></div>
+            <div class="container-fluid">
+            <form action="" id="chatsubmit">
+              <div class="row">
+                <div class="col-sm-10">
+                  <input id="m" type="text" class="form-control" autocomplete="off" />
+                </div>
+                <div class="col-sm-2">
+                  <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+              </div>
             </form>
+          </div>
         </div>
-        <div id="usersarea"></div>
+        <div id="userarea"></div>
     </div>
+
+
+
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="/js/client.js"></script>
