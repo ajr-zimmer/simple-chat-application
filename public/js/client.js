@@ -1,12 +1,23 @@
 // shorthand for $(document).ready(...)
 $(function() {
-  var socket = io();
+  var client = io();
   $('form').submit(function(){
-    socket.emit('chat message', $('#m').val());
-    $('#m').val('');
+    if(isNonEmptyString($('#m').val())){
+      client.emit('send message', $('#m').val());
+      $('#m').val('');
+    }
     return false;
   });
-  socket.on('chat message', function(msg){
+  client.on('display message', function(msg){
     $('#messages').append($('<li>').text(msg));
   });
 });
+
+
+function isNonEmptyString(str){
+  if(str !== ""){
+    return true;
+  } else {
+    return false;
+  }
+}

@@ -4,32 +4,26 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-/**
- * Get port from environment and store in Express.
- */
-
 var port = '3000';
 app.set('port', port);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+io.on('connection', function(client) {
+    console.log('a user connected');
+    client.on('disconnect', function() {
+        console.log('user disconnected');
+    });
+    // When client sends a message, broadcast to everyone
+    client.on('send message', function(msg) {
+        console.log('message: ' + msg);
+        io.emit('display message', msg);
+    });
+});
 
- io.on('connection', function(socket){
-   console.log('a user connected');
-   socket.on('disconnect', function(){
-     console.log('user disconnected');
-   });
-   socket.on('chat message', function(msg){
-     console.log('message: ' + msg);
-     io.emit('chat message', msg);
-   });
- });
+server.listen(3000, function() {
+    console.log('listening on port: ' + app.get('port'));
+});
 
- server.listen(3000, function(){
-   console.log('listening on port: '+ port);
- });
-
+// Used for serving static files
 app.use(express.static(__dirname + '/public'));
 
 // *** routes *** //
