@@ -4,6 +4,8 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+app.use(express.static(__dirname + '/public'));
+
 var port = '3000';
 app.set('port', port);
 
@@ -23,11 +25,6 @@ server.listen(3000, function() {
     console.log('listening on port: ' + app.get('port'));
 });
 
-// Used for serving static files
-app.use(express.static(__dirname + '/public'));
-
-// *** routes *** //
-var routes = require('./routes/index.js');
-
-// *** main routes *** //
-app.use('/', routes);
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/views/index.html');
+});

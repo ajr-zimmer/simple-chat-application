@@ -12,7 +12,7 @@ form {
     position: fixed;
     bottom: 0;
 
-    width: 100%;
+    width: inherit;
     padding: 3px;
 
     background: #000;
@@ -33,6 +33,13 @@ form button {
     border: none;
     background: rgb(130, 224, 255);
 }
+
+#chatarea {
+  float: left;
+  border: 1px #ff00cb solid;
+  width: 70%;
+}
+
 
 #messages {
     margin: 0;
