@@ -4,6 +4,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var moment = require('moment');
+var parseColour = require('parse-color');
 
 moment().format();
 
@@ -15,6 +16,7 @@ app.set('port', port);
 var users = {};
 var namesUsed = [];
 var counter = 0;
+var colours = {};
 
 var messageLogHistory = [];
 
@@ -30,12 +32,30 @@ io.on('connection', function(client) {
     // When client sends a message, broadcast to everyone
     client.on('send message', function(msg) {
         console.log('message: ' + msg);
+
+        var reg = new RegExp('(\/nickcolor) (.*)');
+        var result = reg.exec(msg);
+        //console.log(result);
+        if(result && (result[1] === "/nickcolor")){
+          //console.log("HOOOORRRAAAYY "+ result[2]);
+          console.log(parseColour(result[2]));
+          var colourObj = parseColour(result[2]);
+          if(colourObj.hex){
+            colours[client.id] = colourObj.hex;
+            console.log(colours[client.id]);
+          } else {
+            console.log("ERRRR NO, INVALID VALUE!");
+          }
+        }
+
         var message = {
           id: client.id,
           username: users[client.id],
+          colour: colours[client.id],
           message: msg,
           timestamp: moment().format("MMM/DD/YYYY - kk:mm")
         };
+
         io.emit('display message', message);
     });
 
