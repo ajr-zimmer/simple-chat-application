@@ -25,11 +25,10 @@ $(function() {
 
   client.on('display message', function(msg){
     if(msg.id === client.id){
-      $('#messages').append($('<li>').html($('<strong>').text(msg.username + ": " + msg.message + " - " + msg.timestamp)));
+      $('#messages').append($('<li>').html($('<strong>').text(msg.timestamp + " " + msg.username + ": " + msg.message)));
     } else {
-      $('#messages').append($('<li>').text(msg.username + ": " + msg.message + " - " + msg.timestamp));
+      $('#messages').append($('<li>').text(msg.timestamp + " " + msg.username + ": " + msg.message));
     }
-
   });
 
 });

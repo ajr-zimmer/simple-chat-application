@@ -9,29 +9,37 @@
 </head>
 
 <body>
-  <div id="header"><span id="welcome"></span></div>
+
+    <header class="page-header">
+        <h1><span id="welcome"></span><small> Simple ChatRoom Ltd.</small><h1></div></header>
     <div id="sectionWrap">
         <div id="chatarea">
-            <div id="messagesWrap"><ul id="messages"></ul></div>
+            <div id="messagesWrap" class="well">
+                <ul id="messages"></ul>
+            </div>
             <div class="container-fluid">
-            <form action="" id="chatsubmit">
-              <div class="row">
-                <div class="col-sm-10">
-                  <input id="m" type="text" class="form-control" autocomplete="off" />
-                </div>
-                <div class="col-sm-2">
-                  <button type="submit" class="btn btn-primary">Send</button>
-                </div>
-              </div>
-            </form>
-          </div>
+                <form action="" id="chatsubmit">
+                    <div class="row">
+                        <div class="col-xs-8 col-sm-10">
+                            <input id="m" type="text" class="form-control" autocomplete="off" />
+                        </div>
+                        <div class="col-xs-4 col-sm-2">
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div id="userarea"><ul id="usernames"></ul></div>
+        <div id="userarea" class="panel panel-success">
+          <div class="panel-heading">Users Online</div>
+          <div class="panel-body"><ul id="usernames"></ul></div>
+        </div>
     </div>
-    <div id="footer"></div>
-
-
-
+    <footer>
+      <p>
+        Developed with love by Andrew Z. <i class="glyphicon glyphicon-heart-empty"></i>
+      </p>
+    </footer>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>

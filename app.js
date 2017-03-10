@@ -3,6 +3,9 @@ var path = require('path');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var moment = require('moment');
+
+moment().format();
 
 app.use(express.static(__dirname + '/public'));
 
@@ -28,7 +31,7 @@ io.on('connection', function(client) {
           id: client.id,
           username: users[client.id],
           message: msg,
-          timestamp: Date.now()
+          timestamp: moment().format("MMM/DD/YYYY - kk:mm")
         };
         io.emit('display message', message);
     });
