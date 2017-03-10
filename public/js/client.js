@@ -27,7 +27,7 @@ $(function() {
   client.on('display message', function(msg){
     if(msg.id === client.id){
       $('#messages').append($('<li>').html($('<strong>').text(msg.timestamp + " " + msg.username + ": " + msg.message)));
-      client.emit('update chatlog', $('#messages li').last().text());
+      client.emit('update chatlog', {id: msg.id, text: $('#messages li').last().text()});
     } else {
       $('#messages').append($('<li>').text(msg.timestamp + " " + msg.username + ": " + msg.message));
     }
@@ -36,7 +36,11 @@ $(function() {
   client.on('refresh chatlog', function(logHistory){
     $('#messages').empty();
     for(let i=0; i<logHistory.length; i++){
-      $('#messages').append($('<li>').text(logHistory[i]));
+      if(logHistory[i].id === client.id){
+        $('#messages').append($('<li>').html($('<strong>').text(logHistory[i].text)));
+      } else {
+        $('#messages').append($('<li>').text(logHistory[i].text));
+      }
     }
   });
 
