@@ -15,14 +15,22 @@ var counter = 0;
 
 io.on('connection', function(client) {
     console.log('a user connected with id:' + client.id);
-    users[client.id] = "User"+counter;
+    var username = "User"+counter;
+    users[client.id] = username;
     counter +=1;
+    io.emit('new user', users[client.id]);
     io.emit('update users', users);
 
     // When client sends a message, broadcast to everyone
     client.on('send message', function(msg) {
         console.log('message: ' + msg);
-        io.emit('display message', msg);
+        var message = {
+          id: client.id,
+          username: users[client.id],
+          message: msg,
+          timestamp: Date.now()
+        };
+        io.emit('display message', message);
     });
 
     client.on('disconnect', function() {

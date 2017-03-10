@@ -13,22 +13,28 @@ form {
     background: #000;
 }*/
 
+#header {
+  height: 10%;
+  font-size: 34px;
+  padding: 5px;
+}
+
 #sectionWrap {
   width: inherit;
-  height: inherit;
+  height: 85%;
 }
 
 #chatarea {
   float: left;
   border: 3px #ff00cb solid;
   width: 70%;
-  height: inherit;
+  height: 100%;
 }
 #userarea {
   float: right;
   border: 3px #78ff00 solid;
   width: 30%;
-  height: inherit;
+  height: 100%;
 }
 
 #messagesWrap {
@@ -54,4 +60,9 @@ form {
 
 #messages li:nth-child(odd) {
     background: #eee;
+}
+
+#footer {
+  height: 5%;
+  background: #9ca6b3;
 }

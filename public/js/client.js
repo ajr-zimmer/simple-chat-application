@@ -1,6 +1,18 @@
 // shorthand for $(document).ready(...)
 $(function() {
   var client = io();
+
+  client.on('new user', function(username){
+    $('#welcome').text("Welcome, " + username + "!");
+  });
+
+  client.on('update users', function(users){
+    $('#usernames').empty();
+    $.each(users, function(clientId, username){
+      $('#usernames').append($('<li>').text(username));
+    });
+  });
+
   $('form').submit(function(){
     var chatLog = $('#messagesWrap');
     chatLog.animate({scrollTop: chatLog.prop('scrollHeight')}, 250);
@@ -12,15 +24,14 @@ $(function() {
   });
 
   client.on('display message', function(msg){
-    $('#messages').append($('<li>').text(msg));
+    if(msg.id === client.id){
+      $('#messages').append($('<li>').html($('<strong>').text(msg.username + ": " + msg.message + " - " + msg.timestamp)));
+    } else {
+      $('#messages').append($('<li>').text(msg.username + ": " + msg.message + " - " + msg.timestamp));
+    }
+
   });
 
-  client.on('update users', function(users){
-    $('#usernames').empty();
-    $.each(users, function(clientId, username){
-      $('#usernames').append($('<li>').text(username));
-    });
-  });
 });
 
 
