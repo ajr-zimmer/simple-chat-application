@@ -16,6 +16,8 @@ var users = {};
 var namesUsed = [];
 var counter = 0;
 
+var messageLogHistory = [];
+
 io.on('connection', function(client) {
     console.log('a user connected with id:' + client.id);
     var username = "User"+counter;
@@ -23,6 +25,7 @@ io.on('connection', function(client) {
     counter +=1;
     io.emit('new user', users[client.id]);
     io.emit('update users', users);
+    io.emit('refresh chatlog', messageLogHistory);
 
     // When client sends a message, broadcast to everyone
     client.on('send message', function(msg) {
@@ -34,6 +37,14 @@ io.on('connection', function(client) {
           timestamp: moment().format("MMM/DD/YYYY - kk:mm")
         };
         io.emit('display message', message);
+    });
+
+    client.on('update chatlog', function(lastMsg){
+      messageLogHistory.push(lastMsg);
+      if(messageLogHistory.length > 10){
+        messageLogHistory = messageLogHistory.slice(-10);
+      }
+      io.emit('refresh chatlog', messageLogHistory);
     });
 
     client.on('disconnect', function() {

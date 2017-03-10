@@ -4,6 +4,7 @@ $(function() {
 
   client.on('new user', function(username){
     $('#welcome').text("Welcome, " + username + "!");
+    //$('#messages').append($('<li>').html($('<em>').text("You are " + username + ", welcome!")));
   });
 
   client.on('update users', function(users){
@@ -26,8 +27,16 @@ $(function() {
   client.on('display message', function(msg){
     if(msg.id === client.id){
       $('#messages').append($('<li>').html($('<strong>').text(msg.timestamp + " " + msg.username + ": " + msg.message)));
+      client.emit('update chatlog', $('#messages li').last().text());
     } else {
       $('#messages').append($('<li>').text(msg.timestamp + " " + msg.username + ": " + msg.message));
+    }
+  });
+
+  client.on('refresh chatlog', function(logHistory){
+    $('#messages').empty();
+    for(let i=0; i<logHistory.length; i++){
+      $('#messages').append($('<li>').text(logHistory[i]));
     }
   });
 

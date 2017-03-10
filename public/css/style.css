@@ -28,6 +28,11 @@ header {
   font-size: 21px;
 }
 
+#usernames {
+  list-style-type: none;
+  font-size: 28px;
+}
+
 #messagesWrap {
   height: 90%;
   /*border: 3px #7673fc solid;*/
