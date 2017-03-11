@@ -2,9 +2,12 @@
 $(function() {
   var client = io();
 
+  //setCookie("username", "");
+  //setCookie("usercolour", "");
+
   client.on('connect', function(){
     console.log("Connected: "+ client.id);
-    client.emit('new user');
+    client.emit('new user', getCookie("username"), getCookie("usercolour"));
   });
 
   client.on('connection welcome', function(users, colours, id){
@@ -14,7 +17,6 @@ $(function() {
         return  "Welcome, " + uname + "!";
       });
     }
-    //$('#messages').append($('<li>').html($('<em>').text("You are " + username + ", welcome!")));
   });
 
   client.on('update users', function(users, colours){
@@ -33,6 +35,8 @@ $(function() {
     if(isNonEmptyString(message)){
       if(isColourChange(message)){
         client.emit('colour change', message);
+      } else if (isNameChange(message)){
+        client.emit('name change', message);
       } else {
         client.emit('send message', message);
       }
@@ -44,7 +48,6 @@ $(function() {
   client.on('display message', function(msg){
     generateMessageHtml(client.id, msg);
     if(msg.id === client.id){
-      //client.emit('update chatlog', {id: msg.id, colour: msg.colour, text: $('#messages li').last().text()});
       // add only one message per client, otherwise we get duplicates
       client.emit('update chatlog', msg);
     }
@@ -55,6 +58,14 @@ $(function() {
     for(let i=0; i<logHistory.length; i++){
       generateMessageHtml(client.id, logHistory[i]);
     }
+  });
+
+  client.on('update name', function(newName){
+    setCookie("username", newName);
+  });
+
+  client.on('update colour', function(newColour){
+    setCookie("usercolour", newColour);
   });
 
   /*client.on('invalid colour', function(id){
@@ -91,7 +102,6 @@ function isNonEmptyString(str){
   }
 }
 
-
 function isColourChange(msg){
   var reg = new RegExp('(\/nickcolor) (.*)');
   var result = reg.exec(msg);
@@ -99,4 +109,24 @@ function isColourChange(msg){
     return true;
   }
   return false;
+}
+
+function isNameChange(msg){
+  var reg = new RegExp('(\/nick) (.*)');
+  var result = reg.exec(msg);
+  if(result && (result[1] === "/nick")){
+    return true;
+  }
+  return false;
+}
+
+function setCookie(name, value){
+  document.cookie = name + "=" + value;
+  console.log(document.cookie);
+}
+
+//http://stackoverflow.com/questions/5142337/read-a-javascript-cookie-by-name
+function getCookie(name){
+  var cookiestring = RegExp("" + name + "[^;]+").exec(document.cookie);
+  return unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
 }
