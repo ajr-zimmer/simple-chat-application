@@ -21,32 +21,21 @@ var colours = {};
 var messageLogHistory = [];
 
 io.on('connection', function(client) {
+
+  client.on('new user', function(){
     console.log('a user connected with id:' + client.id);
     var username = "User"+counter;
     users[client.id] = username;
     counter +=1;
-    io.emit('new user', users[client.id]);
-    io.emit('update users', users);
+    colours[client.id] = "#000000";
+    io.emit('connection welcome', users, colours, client.id);
+    io.emit('update users', users, colours);
     io.emit('refresh chatlog', messageLogHistory);
+  });
 
     // When client sends a message, broadcast to everyone
     client.on('send message', function(msg) {
         console.log('message: ' + msg);
-
-        var reg = new RegExp('(\/nickcolor) (.*)');
-        var result = reg.exec(msg);
-        //console.log(result);
-        if(result && (result[1] === "/nickcolor")){
-          //console.log("HOOOORRRAAAYY "+ result[2]);
-          console.log(parseColour(result[2]));
-          var colourObj = parseColour(result[2]);
-          if(colourObj.hex){
-            colours[client.id] = colourObj.hex;
-            console.log(colours[client.id]);
-          } else {
-            console.log("ERRRR NO, INVALID VALUE!");
-          }
-        }
 
         var message = {
           id: client.id,
@@ -57,6 +46,23 @@ io.on('connection', function(client) {
         };
 
         io.emit('display message', message);
+    });
+
+    client.on('colour change', function(msg){
+      var reg = new RegExp('(\/nickcolor) (.*)');
+      var result = reg.exec(msg);
+      if(result && (result[1] === "/nickcolor")){
+        var colourObj = parseColour(result[2]);
+        if(colourObj.hex){
+          colours[client.id] = colourObj.hex;
+          console.log(colours[client.id]);
+          io.emit('connection welcome', users, colours, client.id);
+          io.emit('update users', users, colours);
+        } else {
+          console.log("ERRRR NO, INVALID VALUE!");
+          //io.emit('invalid colour', client.id);
+        }
+      }
     });
 
     client.on('update chatlog', function(lastMsg){
@@ -70,6 +76,7 @@ io.on('connection', function(client) {
     client.on('disconnect', function() {
         console.log('user disconnected with id:' + client.id);
         delete users[client.id];
+        delete colours[client.id];
         io.emit('update users', users);
     });
 });
