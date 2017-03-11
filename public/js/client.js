@@ -60,22 +60,17 @@ $(function() {
     }
   });
 
-  client.on('update name', function(newName){
-    setCookie("username", newName);
-  });
-
-  client.on('update colour', function(newColour){
-    setCookie("usercolour", newColour);
-  });
-
-  /*client.on('invalid colour', function(id){
-    if(id === client.id){
-      $('#m').html(function(){
-        var error = "<span style='color: red;'>" + data.username + "</span>";
-        return data.timestamp +" "+ uname + ": " + data.message;
-      }));
+  client.on('update name', function(newName, id){
+    if(client.id === id){
+      setCookie("username", newName);
     }
-  });*/
+  });
+
+  client.on('update colour', function(newColour, id){
+    if(client.id === id){
+      setCookie("usercolour", newColour);
+    }
+  });
 
 });
 
